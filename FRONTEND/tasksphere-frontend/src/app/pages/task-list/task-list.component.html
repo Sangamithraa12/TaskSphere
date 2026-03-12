@@ -1,0 +1,143 @@
+<div class="dashboard-layout">
+  <header class="navbar glass-panel">
+    <div class="nav-brand" routerLink="/tasks" style="cursor: pointer;">
+      <span class="material-symbols-rounded">task_alt</span>
+      <h1>TaskSphere</h1>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" (click)="loadTasks()" [disabled]="isLoading" title="Refresh Tasks">
+        <span class="material-symbols-rounded" [class.spin]="isLoading">refresh</span>
+      </button>
+      <button class="btn btn-primary" routerLink="/add-task">
+        <span class="material-symbols-rounded">add</span> New Task
+      </button>
+      <button class="btn btn-outline" (click)="signOut()">
+        <span class="material-symbols-rounded">logout</span> Sign Out
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard-content">
+    
+    <section class="metrics-grid">
+      <div class="metric-card glass-panel">
+        <div class="metric-icon primary">
+          <span class="material-symbols-rounded">list_alt</span>
+        </div>
+        <div class="metric-data">
+          <h3>Total</h3>
+          <p class="text-gradient">{{ tasks.length }}</p>
+        </div>
+      </div>
+      <div class="metric-card glass-panel">
+        <div class="metric-icon success">
+          <span class="material-symbols-rounded">check_circle</span>
+        </div>
+        <div class="metric-data">
+          <h3>Completed</h3>
+          <p class="text-gradient">{{ getCount('completed') }}</p>
+        </div>
+      </div>
+      <div class="metric-card glass-panel">
+        <div class="metric-icon warning">
+          <span class="material-symbols-rounded">pending</span>
+        </div>
+        <div class="metric-data">
+          <h3>In Progress</h3>
+          <p class="text-gradient">{{ getCount('progress') }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tasks-section">
+      <div class="section-actions glass-panel">
+        <div class="search-box">
+          <span class="material-symbols-rounded">search</span>
+          <input type="text" [(ngModel)]="searchTerm" placeholder="Search tasks...">
+        </div>
+        
+        <div class="filter-group">
+          <select [(ngModel)]="statusFilter" class="filter-select">
+            <option value="All">All Status</option>
+            <option value="To Do">To Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+
+          <select [(ngModel)]="sortBy" class="filter-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="priority">High Priority</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-state glass-panel">
+        <span class="spinner"></span>
+        <p>Syncing your workspace...</p>
+      </div>
+
+      <div *ngIf="error" class="error-state glass-panel">
+        <span class="material-symbols-rounded text-danger" style="font-size: 48px;">error_outline</span>
+        <h3>Something went wrong</h3>
+        <p>{{ error }}</p>
+        <div class="error-actions">
+          <button class="btn btn-outline" (click)="loadTasks()">
+            <span class="material-symbols-rounded">refresh</span> Try Again
+          </button>
+          <a href="https://localhost:7090/swagger" target="_blank" class="btn btn-link">
+            Check API Status
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoading && tasks.length === 0" class="empty-state glass-panel">
+        <span class="material-symbols-rounded text-muted" style="font-size: 64px;">assignment_late</span>
+        <h3>Your dashboard is quiet</h3>
+        <p>Ready to get things done? Create your first task to see the magic happen.</p>
+        <button class="btn btn-primary" routerLink="/add-task">
+          <span class="material-symbols-rounded">add</span> Create First Task
+        </button>
+      </div>
+
+      <div class="task-grid" *ngIf="!isLoading && tasks.length > 0">
+        <div *ngIf="filteredTasks.length === 0" class="empty-state no-results section-actions">
+           <button class="btn btn-link" (click)="searchTerm = ''; statusFilter = 'All'">Clear all filters</button>
+        </div>
+
+        <div class="task-card glass-panel" *ngFor="let task of filteredTasks; trackBy: trackById">
+          <div class="task-header">
+            <h3 class="task-title">{{ task.title }}</h3>
+            <div class="task-actions">
+              <button class="icon-btn" (click)="editTask(task)" title="Edit">
+                <span class="material-symbols-rounded">edit</span>
+              </button>
+              <button class="icon-btn delete-btn" (click)="deleteTask(task)" title="Delete">
+                <span class="material-symbols-rounded">delete</span>
+              </button>
+            </div>
+          </div>
+          
+          <p class="task-desc" *ngIf="task.description">{{ task.description }}</p>
+          <p class="task-desc text-muted italic" *ngIf="!task.description">No description provided.</p>
+
+          <div class="task-date" *ngIf="task.dueDate">
+            <span class="material-symbols-rounded">calendar_today</span>
+            <span>Due: {{ task.dueDate | date:'mediumDate' }}</span>
+          </div>
+          
+          <div class="task-meta">
+            <span class="badge" [ngClass]="getPriorityClass(task.priority)">
+              {{ task.priority || 'Normal' }}
+            </span>
+            <span class="status-indicator" [ngClass]="getStatusClass(task.status)">
+              <span class="status-dot"></span>
+              {{ task.status || 'To Do' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</div>

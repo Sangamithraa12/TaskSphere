@@ -1,0 +1,6 @@
+@TaskSphere.API_HostAddress = http://localhost:5148
+
+GET {{TaskSphere.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

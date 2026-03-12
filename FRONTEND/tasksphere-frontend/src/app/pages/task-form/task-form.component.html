@@ -1,0 +1,102 @@
+<div class="dashboard-layout">
+  <header class="navbar glass-panel">
+    <div class="nav-brand">
+      <span class="material-symbols-rounded">task_alt</span>
+      <h1>TaskSphere</h1>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-outline" routerLink="/tasks">
+        <span class="material-symbols-rounded">arrow_back</span> Back to Tasks
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard-content form-container">
+    <div class="form-card glass-panel">
+      <div class="form-header">
+        <h2>{{ editing ? 'Edit Task' : 'Create New Task' }}</h2>
+        <p>{{ editing ? 'Update the details of your task.' : 'Add a new task to your dashboard.' }}</p>
+      </div>
+
+      <div *ngIf="errorMsg" class="error-banner">
+        {{ errorMsg }}
+      </div>
+
+      <form (ngSubmit)="saveTask()" #taskForm="ngForm" class="auth-form">
+        
+        <div class="form-group">
+          <label for="title">Title <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            [(ngModel)]="title" 
+            required 
+            placeholder="What needs to be done?"
+            class="form-input"
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description <span class="required">*</span></label>
+          <textarea 
+            id="description" 
+            name="description" 
+            [(ngModel)]="description" 
+            required 
+            rows="4"
+            placeholder="Add details, notes, or sub-tasks..."
+            class="form-input form-textarea"
+          ></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="status">Status</label>
+            <div class="custom-select-wrapper">
+              <select id="status" name="status" [(ngModel)]="status" class="form-input custom-select">
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group half-width">
+            <label for="priority">Priority</label>
+            <div class="custom-select-wrapper">
+              <select id="priority" name="priority" [(ngModel)]="priority" class="form-input custom-select">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="dueDate">Due Date</label>
+            <input 
+              type="date" 
+              id="dueDate" 
+              name="dueDate" 
+              [(ngModel)]="dueDate" 
+              class="form-input"
+            >
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" routerLink="/tasks">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!taskForm.form.valid || isLoading">
+            <span *ngIf="!isLoading">{{ editing ? 'Save Changes' : 'Create Task' }}</span>
+            <span *ngIf="isLoading" class="spinner"></span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+</div>

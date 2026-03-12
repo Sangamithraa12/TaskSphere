@@ -1,0 +1,152 @@
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-radius: 0 0 16px 16px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--primary);
+}
+
+.nav-brand h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 0.5rem 1rem;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  flex: 1;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 2.5rem;
+  align-self: flex-start;
+}
+
+.form-header {
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.form-header p {
+  margin: 0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.half-width {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-group {
+  margin: 0;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.required {
+  color: var(--danger);
+}
+
+.custom-select-wrapper {
+  position: relative;
+}
+
+.custom-select-wrapper::after {
+  content: "keyboard_arrow_down";
+  font-family: 'Material Symbols Rounded';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.custom-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.custom-select option {
+  background-color: #1e1e2d;
+  color: #ffffff;
+  padding: 12px;
+}
+
+.form-help-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
